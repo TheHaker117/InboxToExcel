@@ -17,8 +17,12 @@ import javax.swing.UIManager;
 
 public class FBKAnLexGUI extends JFrame implements ActionListener{
 
-	private JTextField  tf_path, tf_keyword;
-	private JButton btn_browse, btn_generar;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField  tf_path, tf_fpath, tf_keyword;
+	private JButton btn_browse00, btn_browse01, btn_generar;
 	private JLabel lbl_keyword;
 	private JTextArea ta_log;
 	
@@ -45,7 +49,7 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 	
 	private void init(){
 		this.setTitle("InboxToExcel by TheHaker117");
-		this.setSize(400, 300);
+		this.setSize(500, 300);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -56,16 +60,27 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 		
 	}
 	
+	
 	private void config(){
 		
 		tf_path = new JTextField("Ubicación de la carpeta messages...");
 		tf_path.setEditable(false);
 		tf_path.setBounds(20, 20, 355, 30);
 		
-		btn_browse = new JButton("Browse");
-		btn_browse.setBounds(150, 60, 80, 30);
-		btn_browse.setToolTipText("Buscar carpeta");
-		btn_browse.addActionListener(this);
+		btn_browse00 = new JButton("Browse");
+		btn_browse00.setBounds(390, 20, 80, 30);
+		btn_browse00.setToolTipText("Buscar carpeta");
+		btn_browse00.addActionListener(this);
+		
+		tf_fpath = new JTextField("Ubicación de la página de amigos...");
+		tf_fpath.setEditable(false);
+		tf_fpath.setBounds(20, 60, 355, 30);
+		
+		btn_browse01 = new JButton("Browse");
+		btn_browse01.setBounds(390, 60, 80, 30);
+		btn_browse01.setToolTipText("Buscar archivo HTML");
+		btn_browse01.addActionListener(this);
+		
 		
 		lbl_keyword = new JLabel("Keyword:");
 		lbl_keyword.setBounds(25, 100, 50, 30);
@@ -74,20 +89,21 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 		tf_keyword.setBounds(90, 100, 285, 30);
 		
 		btn_generar = new JButton("Generate!");
-		btn_generar.setBounds(145, 150, 90, 30);
+		btn_generar.setBounds(390, 145, 90, 110);
 		btn_generar.setToolTipText("Generar Excel");
 		btn_generar.addActionListener(this);
 		
 		ta_log = new JTextArea();
-		//ta_log.setBounds(20, 190, 30, 30);
-		//ta_log.setSize(100, 20);
 		ta_log.setEditable(false);
 		
 		JScrollPane sp_log = new JScrollPane(ta_log);
-		sp_log.setBounds(20, 190, 355, 70);
+		sp_log.setBounds(20, 145, 355, 110);
+		
 		
 		this.add(tf_path);
-		this.add(btn_browse);
+		this.add(btn_browse00);
+		this.add(tf_fpath);
+		this.add(btn_browse01);
 		this.add(lbl_keyword);
 		this.add(tf_keyword);
 		this.add(btn_generar);
@@ -105,7 +121,7 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 		JFileChooser chooser = new JFileChooser();
 		
 		
-		if(e.getSource().equals(btn_browse)){
+		if(e.getSource().equals(btn_browse00)){
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			int sel = chooser.showOpenDialog(this);
 			
@@ -119,8 +135,24 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 					break;
 				default: break;
 			}
-			
 		}
+		
+		if(e.getSource().equals(btn_browse01)){
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			int sel = chooser.showOpenDialog(this);
+			
+			switch(sel){
+				case JFileChooser.APPROVE_OPTION:
+					tf_fpath.setText(chooser.getSelectedFile().getPath());
+					break;
+				case JFileChooser.CANCEL_OPTION:
+					JOptionPane.showMessageDialog(this, "No se ha seleccionado ningún Archivo", 
+							"Advertencia", JOptionPane.WARNING_MESSAGE);
+					break;
+				default: break;
+			}
+		}
+		
 		
 		if(e.getSource().equals(btn_generar)){
 			
@@ -129,8 +161,6 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 			
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			
-			
-			
 			int sel = chooser.showSaveDialog(this);
 			
 			switch(sel){
@@ -138,9 +168,9 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 					File file = chooser.getSelectedFile();
 					
 					try{
-						new FileBrowser(file.getPath(), tf_path.getText(), tf_keyword.getText(), ta_log);
-						JOptionPane.showMessageDialog(this, "Excel generado satisfactoriamente", 
-								"Información", JOptionPane.INFORMATION_MESSAGE);
+						FileBrowser fbr = new FileBrowser(file.getPath(), tf_path.getText(), tf_fpath.getText(), tf_keyword.getText(), this, ta_log);
+						fbr.execute();
+						
 					}
 					catch(Exception exc){
 						JOptionPane.showMessageDialog(this, "Ha ocurrido un error:" + exc.getMessage(), 
@@ -156,12 +186,7 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 					
 				default: break;	
 				
-			}
-			
-			
+			}	
 		}
-		
 	}
-	
-	
 }

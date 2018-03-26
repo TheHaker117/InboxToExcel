@@ -1,7 +1,6 @@
 package AnLex;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -9,41 +8,62 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-/**
- * Example program to list links from a URL.
- */
-public class FriendExtractor {
-    public static void main(String[] args) throws IOException {
-        
 
-		File input = new File("C://Users//Osmosys 2//Desktop//Susana Cuevas.html");
+public class FriendExtractor{
+	
+	private ArrayList<String[]> tupla = new ArrayList<String[]>();
+	
+	
+	public FriendExtractor(String fpath) throws Exception{
+		initialize(fpath);
+	}
+	
+	
+	private void initialize(String fpath) throws Exception{
+        
+		File input = new File(fpath);
         Document doc = Jsoup.parse(input, "UTF-8");
-        Elements links = doc.select("img[aria-label]");
-
+        Elements tags = doc.select("img[aria-label]");
+        Elements links = doc.select("a[href]");
+        
         ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> href = new ArrayList<String>();
         
-        
-        
-        
-        for(Element link : links){
-//        	if(link.toString().contains("friends_tab"))
-        		names.add(link.attr("aria-label"));
-        		
-        	
-        		
-//            print(" * a: <%s>  (%s)", link.attr("abs:href"), trim(link.text(), 35));
+        for(Element name : tags){
+        	if(!names.contains(name.attr("aria-label"))){
+        		names.add(name.attr("aria-label"));
+        	}
         }
-        print("\nLinks: (%d)", links.size());
-    }
+        
 
-    private static void print(String msg, Object... args) {
-        System.out.println(String.format(msg, args));
+        for(Element link : links){
+            String[] temp = new String[2];
+            
+        	if(names.contains(link.text()) && !href.contains(link.attr("href"))){
+        		href.add(link.attr("href"));
+        		temp[0] = link.text();
+        		temp[1] = link.attr("href");
+        	
+        		tupla.add(temp.clone());
+        	}
+        }
     }
-
-    private static String trim(String s, int width) {
-        if (s.length() > width)
-            return s.substring(0, width-1) + ".";
-        else
-            return s;
-    }
+	
+	public ArrayList<String[]> getTupla(){
+		return tupla;
+	}
+	
+	public String getLink(String name){
+		
+		String rtn = null;
+	
+		for(int i = 0; i < tupla.size(); i++){
+			if(tupla.get(i)[0].equals(name)){
+				rtn = tupla.get(i)[1];
+				break;
+			}			
+		}
+		
+		return rtn;	
+	}
 }

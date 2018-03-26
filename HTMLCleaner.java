@@ -8,51 +8,31 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class HTMLCleaner {
+public class HTMLCleaner{
 	
 	private Document doc;
-	private Elements date;
-	
+	private String keyword;
+
 	
 	public HTMLCleaner(String path, String keyword) throws Exception{
-		openFile(path);
-		search(keyword);
-	}
-	
-	public HTMLCleaner(String path) throws Exception{
-		openFile(path);
-	}
-	
-	public static void main(String[] args){
-		
-		// Example
-		try{
-			HTMLCleaner ran = new HTMLCleaner("C://Users//Osmosys 2//Desktop//243.html", "Hogares Unión");
-		}
-		catch(Exception e){System.err.println(e.getMessage());}
-	}
-	
-	private void openFile(String path) throws Exception{
 		File input = new File(path);
 		doc = Jsoup.parse(input, "UTF-8");
+		this.keyword = keyword;
 	}
 	
-	
-	
-	
-	public String[] search(String keyword){
+
+	public String[] clean() throws Exception {
 
 		ArrayList<String> data = new ArrayList<String>();
 		// Se realiza la busqueda
 		Elements rsl = doc.select("p:contains(" + keyword + ")");
 		
 		// Checamos si encontro alguna vaina
-		if(rsl.isEmpty()){
-	//		System.out.println("Message not found");
+		if(rsl.isEmpty())
 			return null;
-		}
+		
 		else{
-	//		System.out.println("Message found");
+					
 			// Mensaje buscado
 			Element msg = (Element) rsl.toArray()[0];
 			
@@ -116,12 +96,8 @@ public class HTMLCleaner {
 				else
 					data.add(mgss.get(i).text());
 			}
-				
-			
-			
-			
 		}
 		
 		return data.toArray(new String[] {});
-	}	
+	}
 }
