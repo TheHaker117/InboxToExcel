@@ -1,3 +1,13 @@
+/*
+ * This class creates the excel file.
+ * The data is obtained from the facebook backup.
+ * 
+ * @author Ariel Bravo (TheHaker117)
+ * @version %I%, %G%
+ */
+
+
+
 package AnLex;
 
 import java.io.File;

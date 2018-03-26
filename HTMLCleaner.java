@@ -1,3 +1,12 @@
+/*
+ * This class obtains message, date, sender and receiver from and HTML file.
+ * 
+ * @author Ariel Bravo (TheHaker117)
+ * @version %I%, %G%
+ * 
+ */
+
+
 package AnLex;
 
 import java.io.File;

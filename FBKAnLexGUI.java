@@ -18,6 +18,29 @@ import javax.swing.UIManager;
 public class FBKAnLexGUI extends JFrame implements ActionListener{
 
 	/**
+	 * This is a helper to export messages from facebook into an excel file.
+	 * This works using the facebook backup, once downloaded.
+	 * <p>
+	 * The resulting excel file contains two sheets, the first one is the inbox register,
+	 * this includes a counter, sender, receiver, date, message and the first answer.
+	 * The second sheet contains the friends list, with two columns, first one is for the friend name, 
+	 * and the second one, is for the friend profile link.
+	 * <p>
+	 * To use the program:
+	 * <ul>
+	 * <li> Select the messages folder
+	 * <li> Select the HTML file of the friend list facebook page
+	 * <li> Sets the keyword. This is a specific word that contains the message that wants to search
+	 * <li> Click on Generate!
+	 * <li> Select the location where will be save the excel file. REMEMBER add ".xlsx" extension
+	 * </ul>
+	 * 	
+	 * 
+	 * This software is for only educational purpose. DON'T USE FOR COMMERCIAL OR ANY LUCRATIVE PURPOSE!
+	 * 
+	 * 
+	 * @author	Ariel Bravo (TheHaker117)
+	 * @version %I%, %G%
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -156,8 +179,8 @@ public class FBKAnLexGUI extends JFrame implements ActionListener{
 		
 		if(e.getSource().equals(btn_generar)){
 			
-			JOptionPane.showMessageDialog(this, "Seleccione la ubicación en donde se guardará el archivo excel", 
-					"Advertencia", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Seleccione la ubicación en donde se guardará el archivo excel.\nRECUERDA guardar el archivo con la extensión .xlsx", 
+					"Información", JOptionPane.INFORMATION_MESSAGE);
 			
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			

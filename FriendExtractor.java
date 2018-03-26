@@ -1,3 +1,12 @@
+/*
+ * This class obtains the facebook friend list and saves it into a arraylist.
+ * 
+ * @author Ariel Bravo (TheHaker117)
+ * @version %I%, %G%
+ */
+
+
+
 package AnLex;
 
 import java.io.File;
